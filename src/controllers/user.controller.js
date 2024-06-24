@@ -166,9 +166,16 @@ const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
+      // It removes the field from the doc
+      $unset: {
+        refreshToken: 1,
+      },
+
+      /* This does not remove the field from the document
       $set: {
         refreshToken: undefined,
       },
+      */
     },
     {
       new: true,
@@ -480,8 +487,6 @@ const getWatchHistory = asyncHandler(async (req, res) => {
       )
     );
 });
-
-
 
 export {
   registerUser,
